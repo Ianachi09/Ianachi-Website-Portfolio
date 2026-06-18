@@ -849,12 +849,21 @@ margin-top: 2px;
 
 /* Responsive Rules for Masonry */
 @media (max-width: 900px) {
-  .padlet-grid { column-count: 3; }
+  .padlet-grid {
+    -webkit-column-count: 3; /* Fix for Safari/iOS */
+    -moz-column-count: 3;    /* Fix for Firefox */
+    column-count: 3; 
+  }
 }
 
 @media (max-width: 650px) {
   .padlet-grid { 
-    column-count: 2; /* 2 columns is the sweet spot for mobile */
+    column-count: 2; 
+    -webkit-column-count: 2; /* Fix for Safari/iOS */
+    -moz-column-count: 2;    /* Fix for Firefox */
+
+    -webkit-column-gap: 12px;
+    -moz-column-gap: 12px;
     column-gap: 12px; /* Shrinks the horizontal gap on phones */
   }
   .padlet-card {
@@ -1193,10 +1202,9 @@ margin: 6px 0;
 /* ── MOBILE NAVIGATION FIX ── */
 @media (max-width: 768px) {
   .topnav-links {
-    display: none; /* Hides the top nav links on smaller screens */
+    display: none !important; /* The !important forces the browser to obey */
   }
 }
-
 ::-webkit-scrollbar { width: 6px; }
 ::-webkit-scrollbar-track { background: var(--bg); }
 ::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 3px; }
