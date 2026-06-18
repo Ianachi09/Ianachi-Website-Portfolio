@@ -1,231 +1,9 @@
-/* const GH_USER = 'Ianachi09'; 
-const CACHE_DURATION = 3600000; // 1 hour in milliseconds
-
-// ── PAGE ROUTING & UI ──
-function showPage(page) {
-  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-  document.getElementById('page-' + page).classList.add('active');
-  document.querySelectorAll('.topnav-links a').forEach(a => {
-    a.classList.toggle('active', a.dataset.page === page);
-  });
-  window.scrollTo(0, 0);
-  if (page === 'projects' && !window._projLoaded) loadProjects();
-  if (page === 'about') loadAboutStats();
-}
-
-// ── ENHANCED GITHUB API FETCHING WITH CACHING ──
-async function ghFetch(path) {
-  const cacheKey = `gh_cache_${path}`;
-  const cachedData = localStorage.getItem(cacheKey);
-  const cacheTimestamp = localStorage.getItem(`${cacheKey}_time`);
-
-  // Check if we have valid cached data that is less than 1 hour old
-  if (cachedData && cacheTimestamp && (Date.now() - cacheTimestamp < CACHE_DURATION)) {
-      console.log(`Loading ${path} from cache...`);
-      return JSON.parse(cachedData);
-  }
-
-  // If no valid cache, fetch from the actual API
-  console.log(`Fetching ${path} from GitHub API...`);
-  const res = await fetch(`https://api.github.com/users/${GH_USER}${path}`, {
-    headers: { 'Accept': 'application/vnd.github.v3+json' }
-  });
-  
-  if (!res.ok) throw new Error(res.status);
-  
-  const data = await res.json();
-  
-  // Save the new data and timestamp to the cache
-  localStorage.setItem(cacheKey, JSON.stringify(data));
-  localStorage.setItem(`${cacheKey}_time`, Date.now());
-  
-  return data;
-}
-
-// ── FETCH ACTUAL CONTRIBUTIONS ──
-async function fetchContributions(username) {
-  const cacheKey = `gh_contrib_cache_${username}`;
-  const cachedData = localStorage.getItem(cacheKey);
-  const cacheTimestamp = localStorage.getItem(`${cacheKey}_time`);
-
-  // 1. Check the local browser notebook (cache) first
-  if (cachedData && cacheTimestamp && (Date.now() - cacheTimestamp < CACHE_DURATION)) {
-      console.log(`Loading contributions from cache...`);
-      return JSON.parse(cachedData);
-  }
-
-  // 2. Fetch from a community scraper API
-  console.log(`Fetching real contributions for ${username}...`);
-  const res = await fetch(`https://github-contributions-api.deno.dev/${username}.json`);
-  
-  if (!res.ok) throw new Error('Failed to fetch contributions');
-  
-  const data = await res.json();
-  // 3. Extract the total number
-  const total = data.totalContributions || 0; 
-
-  // 4. Save to cache
-  localStorage.setItem(cacheKey, JSON.stringify(total));
-  localStorage.setItem(`${cacheKey}_time`, Date.now());
-  
-  return total;
-}
-
-// ── DATA LOADING ──
-async function loadHomeStats() {
-  try {
-    const user = await ghFetch('');
-    const repos = await ghFetch('/repos?per_page=100&sort=updated');
-    
-    // Fetch the real contributions here
-    const contribs = await fetchContributions(GH_USER); 
-
-    document.getElementById('gh-repos').textContent = user.public_repos;
-    
-    // Update the DOM with the real number
-    document.getElementById('contrib-count').textContent = contribs; 
-
-    const totalStars = repos.reduce((s, r) => s + r.stargazers_count, 0);
-    document.getElementById('gh-stars').textContent = totalStars;
-    document.getElementById('gh-streak').textContent = '🔥 active';
-  } catch(e) {
-    console.error("Failed to load home stats:", e);
-  }
-}
-
-async function loadAboutStats() {
-  if (window._aboutLoaded) return;
-  window._aboutLoaded = true;
-  try {
-    const user = await ghFetch('');
-    const repos = await ghFetch('/repos?per_page=100');
-    
-    // Fetch the real contributions here too
-    const contribs = await fetchContributions(GH_USER);
-
-    const totalStars = repos.reduce((s, r) => s + r.stargazers_count, 0);
-    document.getElementById('about-repos').textContent = user.public_repos;
-    document.getElementById('about-stars').textContent = totalStars;
-    
-    // Update the DOM with the real number
-    document.getElementById('about-contribs').textContent = contribs;
-  } catch(e) {
-    console.error("Failed to load about stats:", e);
-  }
-}
-
-function catClass(cat) {
-  if (cat === 'assignment') return 'cat-assignment';
-  if (cat === 'open-source') return 'cat-open-source';
-  return 'cat-personal';
-}
-
-async function loadProjects() {
-  window._projLoaded = true;
-  const list = document.getElementById('project-list');
-  try {
-    const repos = await ghFetch('/repos?per_page=100&sort=updated');
-    const filtered = repos.filter(r => !r.fork && !r.private);
-
-    window._allProjects = filtered.map((r, i) => ({
-      name: r.name,
-      desc: r.description || 'no description yet.',
-      url: r.html_url,
-      homepage: r.homepage,
-      lang: r.language,
-      stars: r.stargazers_count,
-      topics: r.topics || [],
-      cat: detectCategory(r),
-      emoji: EMOJIS[i % EMOJIS.length],
-      updated: r.updated_at,
-    }));
-
-    renderProjects('all');
-  } catch(e) {
-    list.innerHTML = '<div class="page-loading"><span>failed to fetch repositories. api limit reached?</span></div>';
-  }
-}
-
-function renderProjects(filter) {
-  const list = document.getElementById('project-list');
-  const projects = window._allProjects || [];
-  const shown = filter === 'all' ? projects : projects.filter(p => p.cat === filter);
-
-  if (shown.length === 0) {
-    list.innerHTML = '<div class="page-loading"><span>no projects in this category yet.</span></div>';
-    return;
-  }
-
-  list.innerHTML = shown.map(p => `
-    <div class="project-card" data-cat="${p.cat}">
-      <div class="project-thumb">${p.emoji}</div>
-      <div class="project-content">
-        <div class="project-meta">
-          <div class="project-title">${p.name}</div>
-          <span class="project-cat ${catClass(p.cat)}">${p.cat}</span>
-        </div>
-        <p class="project-desc">${p.desc}</p>
-        <div class="project-tags">
-          ${p.lang ? `<span class="lang-tag">${p.lang}</span>` : ''}
-          ${p.stars > 0 ? `<span class="lang-tag">★ ${p.stars}</span>` : ''}
-          ${p.topics.slice(0, 3).map(t => `<span class="lang-tag">${t}</span>`).join('')}
-        </div>
-        <div class="project-links">
-          <a href="${p.url}" target="_blank" class="project-link">⌨ view repo →</a>
-          ${p.homepage ? `<a href="${p.homepage}" target="_blank" class="project-link">🌐 live demo →</a>` : ''}
-        </div>
-      </div>
-    </div>
-  `).join('');
-}
-
-function filterProjects(btn) {
-  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-  btn.classList.add('active');
-  renderProjects(btn.dataset.filter);
-}
-
-function submitForm(e) {
-  e.preventDefault();
-  const btn = document.getElementById('submit-btn');
-  const status = document.getElementById('form-status');
-  btn.textContent = 'sending…';
-  btn.disabled = true;
-  
-  // Note: Formspree or Web3Forms implementation goes here
-  
-  setTimeout(() => {
-    btn.textContent = 'send message →';
-    btn.disabled = false;
-    status.style.display = 'block';
-    status.textContent = '✓ message sent! i\'ll reply soon ♡';
-    document.getElementById('contact-form').reset();
-    setTimeout(() => status.style.display = 'none', 4000);
-  }, 900);
-}
-
-// ── INIT ──
-loadHomeStats(); */
-
-
-
-
-
-
 // ── CONFIGURATION ──
 const GH_USER = 'Ianachi09'; 
 const PORTFOLIO_REPO = 'ianachi09/ianachi-website-portfolio';
-
-// ⚠️ IMPORTANT: You must list the exact folder names from your repo here
-const PROJECT_FOLDERS = [
-  'project-one',  // Example: Change this to your real folder name
-  'project-two'   // Example: Change this to your real folder name
-];
-
 const CACHE_DURATION = 3600000; // 1 hour in milliseconds
 
 // ── PAGE ROUTING & UI ──
-// 1. Define the physical order of your pages
 const pageOrder = ['home', 'about', 'padlet', 'projects', 'contact'];
 let currentPage = 'home'; // Keep track of where the user is
 
@@ -363,22 +141,6 @@ async function loadHomeStats() {
   }
 }
 
-/* async function loadAboutStats() {
-  if (window._aboutLoaded) return;
-  window._aboutLoaded = true;
-  try {
-    const user = await ghFetch('');
-    const repos = await ghFetch('/repos?per_page=100');
-    const contribs = await fetchContributions(GH_USER);
-
-    const totalStars = repos.reduce((s, r) => s + r.stargazers_count, 0);
-    document.getElementById('about-repos').textContent = user.public_repos;
-    document.getElementById('about-stars').textContent = totalStars;
-    document.getElementById('about-contribs').textContent = contribs;
-  } catch(e) {}
-} */
-
-// 2. Replace the old loadAboutStats function with this:
 async function loadFullAbout() {
   window._aboutLoaded = true;
   const container = document.getElementById('about-markdown-content');
@@ -459,7 +221,7 @@ async function loadPadletCards() {
       }
     }
     
-    // 5. Inject all the generated cards into the page
+    // Inject all the generated cards into the page
     container.innerHTML = html;
     
   } catch (error) {
@@ -477,11 +239,11 @@ async function loadProjects() {
   container.className = 'project-container'; 
 
   try {
-    // Step A: Get a list of all your public repositories
+    // Get a list of all your public repositories
     const allRepos = await ghFetch('/repos?per_page=100&sort=updated');
     const publicRepos = allRepos; //.filter(repo => !repo.fork); // filter is for forked project
 
-    // Step B: Guess-and-check every repository for the info.md file
+    // Guess-and-check every repository for the info.md file
     const projectsHtml = await Promise.all(publicRepos.map(async (repo) => {
       const repoName = repo.name;
 
@@ -526,7 +288,7 @@ async function loadProjects() {
       }
     }));
 
-    // Step C: Filter out all the empty strings and display the ones we found
+    // Filter out all the empty strings and display the ones we found
     const validProjects = projectsHtml.filter(html => html !== '');
     
     if (validProjects.length === 0) {
@@ -613,6 +375,4 @@ function createFallingBackground() {
 
 // ── INIT ──
 loadHomeStats();
-createFallingBackground(); // <--- Add this line to start the effect
-// ── INIT ──
-loadHomeStats();
+createFallingBackground(); 
