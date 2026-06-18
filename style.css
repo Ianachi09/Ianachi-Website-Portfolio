@@ -67,7 +67,7 @@ z-index: 0;
   top: 0; left: 0;
   width: 100%; height: 100%;
   pointer-events: none; /* Prevents images from blocking clicks */
-  z-index: -1;          /* Pushes the container behind all your center-focused content */
+  z-index: 1;          /* Pushes the container behind all your center-focused content */
   overflow: hidden;     /* Hides the characters once they fall past the bottom edge */
 }
 

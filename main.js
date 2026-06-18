@@ -335,7 +335,7 @@ function submitForm(e) {
     btn.textContent = 'send message →';
     btn.disabled = false;
     status.style.display = 'block';
-    status.textContent = '✓ message sent! i\'ll reply soon ♡';
+    status.textContent = '✓ message sent! i\'ll reply soon';
     document.getElementById('contact-form').reset();
     setTimeout(() => status.style.display = 'none', 4000);
   }, 900);
