@@ -28,7 +28,7 @@ These made me understand every chapter clearly and I have asked some of my cours
 
 
 
-<img src="src/padlet-contributions.png" alt="All of my Padlet contribution throughout this semester">
+<img src="src/padlet-contributions.png" alt="Images of Padlet contribution throughout this semester">
 <center>
     <i><b>All of my Padlet contribution throughout this semester</b></i>
 </center>
@@ -49,10 +49,12 @@ For group assignments, It was hard work trying to keep track of progresses as th
 
 <h3 align="center">Closing</h3>
 
+This course helped me learn to code efficiently and implement all those techniques into one optimized program. Especially implementaion of OOP and data structures and algorithms that will be useful on making a system that uses and manages lots of data.
+
 Now for anyone that wants to know how I learn DSA (or computers in general), is to just go for it. Youtube, tutorials, websites, there is a lot of resources where you can learn. I myself only watched tons of videos about DSA. Although i never tried to do it until now (never got a chance to learn due to my previous courses), I still got the fundamentals down. Most importantly, keep this mindset;
 
 <i><b>“Learn because you want to, not because you have to.”</b></i>
 
-Closing my reflections, I am really happy that I got to learn DSA and planning to cherish the experience exciting.
+Closing my reflections, I am really happy that I got to learn DSA and planning to cherish the experience.
 
 
