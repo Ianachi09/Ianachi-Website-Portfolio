@@ -539,7 +539,7 @@ color: var(--term-text);
 .t-line { display: flex; gap: 10px; align-items: flex-start; }
 .t-cursor {
 display: inline-block;
-width: 7px; height: 13px;
+width: 7px; height: 20px;
 background: var(--term-blue);
 vertical-align: middle;
 animation: blink 1.1s step-end infinite;
@@ -832,6 +832,8 @@ text-align: center;
   padding: 28px 32px 32px;
 }
 
+
+
 /* ── MARKDOWN CONTENT STYLING ── */
 .markdown-container {
   font-family: var(--font-body);
@@ -910,7 +912,7 @@ display: block;
 font-size: 11.5px;
 color: var(--text3);
 margin-top: 2px;
-} */
+}
 
 /* ── PROJECTS PAGE ── */
 /* .filter-bar {
@@ -1036,6 +1038,77 @@ transition: color 0.15s;
 }
 .project-link:hover { color: var(--accent); } */
 
+/* ── PADLET PAGE ── */
+.padlet-grid {
+  /* MASONRY FIX: Abandoning Grid for CSS Columns */
+  column-count: 3;
+  column-gap: 24px;
+  padding: 10px 0 40px;
+}
+
+.padlet-card {
+  background: var(--surface);
+  border: 1.5px solid var(--border);
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: var(--shadow);
+  transition: all 0.2s;
+  
+  /* NEW: Required for Masonry behavior */
+  display: inline-block; 
+  width: 100%;
+  margin-bottom: 24px; /* This replaces the old grid gap for vertical spacing */
+  break-inside: avoid; /* Crucial: Stops the browser from cutting a card in half between columns */
+}
+
+.padlet-card:hover {
+  box-shadow: var(--shadow-lg);
+  transform: translateY(-4px);
+  border-color: var(--accent2);
+}
+
+.padlet-header {
+  padding: 16px 18px;
+  border-bottom: 1px solid var(--border);
+  background: var(--surface2);
+}
+
+.padlet-title {
+  font-family: var(--font-display);
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text);
+  line-height: 1.4;
+}
+
+.padlet-img {
+  width: 100%;
+  height: auto; 
+  border-bottom: 1px solid var(--border);
+  background: var(--bg2);
+  display: block;
+}
+
+.padlet-content {
+  padding: 18px;
+  /* flex-grow is no longer needed since we aren't stretching cards */
+}
+
+.padlet-desc {
+  font-size: 13.5px;
+  color: var(--text2);
+  line-height: 1.5;
+}
+
+/* Responsive Rules for Masonry */
+@media (max-width: 900px) {
+  .padlet-grid { column-count: 2; }
+}
+
+@media (max-width: 650px) {
+  .padlet-grid { column-count: 1; }
+}
+
 /* ── PROJECTS PAGE ── */
 .filter-bar {
   display: flex;
@@ -1079,10 +1152,12 @@ transition: color 0.15s;
   max-width: 950px;
   box-shadow: var(--shadow);
   transition: all 0.2s;
+  cursor: pointer; /* NEW: Changes the mouse to a hand when hovering */
 }
+
 .custom-project-card:hover { 
   box-shadow: var(--shadow-lg); 
-  transform: translateY(-2px); 
+  transform: translateY(-4px); 
   border-color: var(--accent2); 
 }
 

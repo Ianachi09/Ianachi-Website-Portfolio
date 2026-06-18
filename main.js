@@ -226,7 +226,7 @@ const CACHE_DURATION = 3600000; // 1 hour in milliseconds
 
 // ── PAGE ROUTING & UI ──
 // 1. Define the physical order of your pages
-const pageOrder = ['home', 'about', 'projects', 'contact'];
+const pageOrder = ['home', 'about', 'padlet', 'projects', 'contact'];
 let currentPage = 'home'; // Keep track of where the user is
 
 function showPage(targetPage) {
@@ -273,6 +273,7 @@ function showPage(targetPage) {
 
   if (targetPage === 'projects' && !window._projLoaded) loadProjects();
   if (targetPage === 'about' && !window._aboutLoaded) loadFullAbout();
+  if (targetPage === 'padlet' && !window._padletLoaded) loadPadletCards();
 
   // Update our tracker
   currentPage = targetPage;
@@ -413,6 +414,60 @@ async function loadFullAbout() {
   }
 }
 
+async function loadPadletCards() {
+  window._padletLoaded = true;
+  const container = document.getElementById('padlet-container');
+  
+  try {
+    // 1. Download the text file
+    const response = await fetch('src/padlet-data.txt');
+    if (!response.ok) throw new Error("Could not find padlet-data.txt");
+    
+    // 2. Read the text inside the file
+    const rawText = await response.text();
+    
+    // 3. Chop the text into blocks every time there is a "---"
+    const blocks = rawText.split('---');
+    
+    let html = '';
+    
+    // 4. Loop through each block of text
+    for (let block of blocks) {
+      // Clean up empty spaces and split the block into individual lines
+      const lines = block.trim().split('\n').map(line => line.trim()).filter(line => line !== '');
+      
+      // Safety check: Only build a card if we have at least a Title, Image, and Description
+      if (lines.length >= 3) {
+        const title = lines[0];       // The first line is the title
+        const imageFile = lines[1];   // The second line is the image name
+        const desc = lines.slice(2).join('<br>'); // Everything else is the description
+        
+        // Build the HTML for this specific card
+        html += `
+          <div class="padlet-card">
+            <div class="padlet-header">
+              <h3 class="padlet-title">${title}</h3>
+            </div>
+            
+            <img src="src/${imageFile}" alt="${title}" class="padlet-img" loading="lazy">
+            
+            <div class="padlet-content">
+              <p class="padlet-desc">${desc}</p>
+            </div>
+          </div>
+        `;
+      }
+    }
+    
+    // 5. Inject all the generated cards into the page
+    container.innerHTML = html;
+    
+  } catch (error) {
+    console.error(error);
+    container.innerHTML = '<div class="page-loading"><span>failed to load padlet notes. make sure src/padlet-data.txt exists!</span></div>';
+  }
+}
+
 // ── PROJECTS LOADING (FROM RAW GITHUB CONTENT) ──
 // ── DYNAMIC PROJECTS LOADING ──
 async function loadProjects() {
@@ -429,6 +484,8 @@ async function loadProjects() {
     // Step B: Guess-and-check every repository for the info.md file
     const projectsHtml = await Promise.all(publicRepos.map(async (repo) => {
       const repoName = repo.name;
+
+      const repoUrl = repo.html_url;
       
       // Look specifically for the web_src folder in the main branch
       const baseUrl = `https://raw.githubusercontent.com/${GH_USER}/${repoName}/main/web_src`;
@@ -454,7 +511,7 @@ async function loadProjects() {
         const catClass = `cat-${category}`; 
 
         return `
-          <div class="custom-project-card" data-cat="${category}">
+          <div class="custom-project-card" data-cat="${category}" onclick="window.open('${repoUrl}', '_blank')">
             <div class="card-header">
               <h3 class="card-title">${title}</h3>
               <span class="card-category ${catClass}">${category}</span>

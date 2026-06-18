@@ -1,0 +1,52 @@
+Self Introduction
+padlet-1.png
+Self introduction as the first 2 week of this semester was online.
+---
+Introduction of Data Structures and Algorithms
+padlet-2.png
+My notes on data structures and algorithms. My first and only handwritten notes as the next one would be in GitHub.
+---
+C++ Coding Fundementals
+padlet-3.png
+Included my own notes on GitHub with Notion link.
+---
+Arrays
+padlet-4.png
+Shared my array notes (implementations), I also coded sorting algorithms early.
+---
+Abstract Data Types (ADT)
+padlet-5.png
+Shared a personal project (turn based game) and mini project (phone program) that applies OOP (Object Oriented Programming).
+---
+Mid Term Reflection
+padlet-6.png
+Self reflection on halfway of our DSA journey.
+---
+Stack
+padlet-7.png
+Gave some introduction on the topic and shared my GitHub note with link to visualizer to see it in action.
+---
+Queue
+padlet-8.png
+Similar to stack, gave some introduction. shared my GitHub note and link to visualizer.
+---
+Sorting Algorithm
+padlet-9.png
+Introduction to sorting, notes on my GitHub and visualizer link.
+---
+Searching Algorithm
+padlet-10.png
+Similar to sorting algorithms, included some introduction, notes and visualizer link.
+---
+Linked List
+padlet-11.png
+Gave some example, extra informations on linked list and personal notes.
+---
+Tree
+padlet-12.png
+Gave some example, introductions and notes on the topic.
+---
+Interaction
+padlet-13.png
+Saw some interesting proeject on Array section. Asked if I can use the idea to give it some twist then made the program.
+---

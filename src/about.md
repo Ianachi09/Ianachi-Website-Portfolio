@@ -1,6 +1,6 @@
 <h1 align="center">Hello There!</h1>
 
-My name is Mohammad Asyraaf Daniel, but you can call me Asyraaf. I'm currently studying Computer Engineering at Universiti Teknikal Malaysia Melaka (UTeM) in interest of doing computer stuff with proper education.
+My name is Mohammad Asyraaf Daniel, but you can call me Asyraaf/Ianachi. I'm currently studying Computer Engineering at Universiti Teknikal Malaysia Melaka (UTeM) on degree level in interest of doing computer stuff with proper education.
 
 My hobbies are messing with computers (software mostly, as I don't have resources to do hardware) but usually I'll enjoy anime content in my free time (games, manga, animations, etc.). My level of skill on coding is intermediate in C++ and Python but I'm still improving especially in learning more coding languages and math aspects.
 
