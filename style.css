@@ -849,11 +849,26 @@ margin-top: 2px;
 
 /* Responsive Rules for Masonry */
 @media (max-width: 900px) {
-  .padlet-grid { column-count: 2; }
+  .padlet-grid { column-count: 3; }
 }
 
 @media (max-width: 650px) {
-  .padlet-grid { column-count: 1; }
+  .padlet-grid { 
+    column-count: 2; /* 2 columns is the sweet spot for mobile */
+    column-gap: 12px; /* Shrinks the horizontal gap on phones */
+  }
+  .padlet-card {
+    margin-bottom: 12px; /* Shrinks the vertical gap on phones */
+  }
+  .padlet-content {
+    padding: 12px; /* Shrinks the padding inside the card so text fits better */
+  }
+  .padlet-title {
+    font-size: 14px; /* Slightly smaller title for mobile */
+  }
+  .padlet-desc {
+    font-size: 12px; /* Slightly smaller text for mobile */
+  }
 }
 
 /* ── PROJECTS PAGE ── */
@@ -1173,6 +1188,13 @@ opacity: 0;
 height: 1px;
 background: var(--border);
 margin: 6px 0;
+}
+
+/* ── MOBILE NAVIGATION FIX ── */
+@media (max-width: 768px) {
+  .topnav-links {
+    display: none; /* Hides the top nav links on smaller screens */
+  }
 }
 
 ::-webkit-scrollbar { width: 6px; }
