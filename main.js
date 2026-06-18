@@ -13,25 +13,6 @@ function showPage(page) {
   if (page === 'about') loadAboutStats();
 }
 
-function toggleSidebar() {
-  document.getElementById('sidebar').classList.toggle('open');
-  document.getElementById('sidebarOverlay').classList.toggle('open');
-}
-
-function closeSidebar() {
-  document.getElementById('sidebar').classList.remove('open');
-  document.getElementById('sidebarOverlay').classList.remove('open');
-}
-
-let footerVisible = false;
-window.addEventListener('scroll', () => {
-  const shouldShow = window.scrollY > 300;
-  if (shouldShow !== footerVisible) {
-    footerVisible = shouldShow;
-    document.getElementById('sticky-footer').classList.toggle('visible', shouldShow);
-  }
-});
-
 // ── ENHANCED GITHUB API FETCHING WITH CACHING ──
 async function ghFetch(path) {
   const cacheKey = `gh_cache_${path}`;
@@ -244,15 +225,57 @@ const PROJECT_FOLDERS = [
 const CACHE_DURATION = 3600000; // 1 hour in milliseconds
 
 // ── PAGE ROUTING & UI ──
-function showPage(page) {
-  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-  document.getElementById('page-' + page).classList.add('active');
+// 1. Define the physical order of your pages
+const pageOrder = ['home', 'about', 'projects', 'contact'];
+let currentPage = 'home'; // Keep track of where the user is
+
+function showPage(targetPage) {
+  // Don't do anything if they click the button for the page they are already on
+  if (targetPage === currentPage) return; 
+
+  // Find out if we are moving forward (e.g. Home to About) or backward (About to Home)
+  const currentIndex = pageOrder.indexOf(currentPage);
+  const targetIndex = pageOrder.indexOf(targetPage);
+  const isForward = targetIndex > currentIndex;
+
+  const currentEl = document.getElementById('page-' + currentPage);
+  const targetEl = document.getElementById('page-' + targetPage);
+
+  // -- ANIMATION SETUP --
+  // Temporarily turn off the animation transition to secretly move the target page into its starting position
+  targetEl.style.transition = 'none';
+  targetEl.classList.remove('out-left', 'out-right');
+  
+  // If moving forward, start the new page on the right. If backward, start on the left.
+  targetEl.classList.add(isForward ? 'out-right' : 'out-left');
+
+  // Trigger a browser reflow (Explanation below)
+  void targetEl.offsetWidth;
+
+  // Turn the smooth animation back on
+  targetEl.style.transition = '';
+
+  // -- EXECUTE SWIPE --
+  // Slide the old page out
+  currentEl.classList.remove('active');
+  currentEl.classList.add(isForward ? 'out-left' : 'out-right');
+
+  // Slide the new page in to the center
+  targetEl.classList.remove('out-left', 'out-right');
+  targetEl.classList.add('active');
+
+  // -- UPDATE UI --
   document.querySelectorAll('.topnav-links a').forEach(a => {
-    a.classList.toggle('active', a.dataset.page === page);
+    a.classList.toggle('active', a.dataset.page === targetPage);
   });
-  window.scrollTo(0, 0);
-  if (page === 'projects' && !window._projLoaded) loadProjects();
-  if (page === 'about') loadFullAbout();
+
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+
+  if (targetPage === 'projects' && !window._projLoaded) loadProjects();
+  if (targetPage === 'about' && !window._aboutLoaded) loadFullAbout();
+
+  // Update our tracker
+  currentPage = targetPage;
 }
 
 function toggleSidebar() {
@@ -323,6 +346,11 @@ async function loadHomeStats() {
     const repos = await ghFetch('/repos?per_page=100&sort=updated');
     const contribs = await fetchContributions(GH_USER); 
 
+    // We create an image tag using the avatar_url provided by GitHub
+    const avatarHtml = `<img src="${user.avatar_url}" alt="Profile Picture">`;
+    // We inject it into the sidebar
+    document.getElementById('sidebar-avatar-img').innerHTML = avatarHtml;
+
     document.getElementById('gh-repos').textContent = user.public_repos;
     document.getElementById('contrib-count').textContent = contribs; 
 
@@ -361,15 +389,18 @@ async function loadFullAbout() {
     const contribs = await fetchContributions(GH_USER);
     const totalStars = repos.reduce((s, r) => s + r.stargazers_count, 0);
 
+    // Inject the same image into the About page card
+    const avatarHtml = `<img src="${user.avatar_url}" alt="Profile Picture">`;
+    document.getElementById('about-avatar-img').innerHTML = avatarHtml;
+
     document.getElementById('about-repos-compact').textContent = user.public_repos;
     document.getElementById('about-stars-compact').textContent = totalStars;
     document.getElementById('about-contribs-compact').textContent = contribs;
 
     // 2. Fetch the about.md file directly from this website's repository
-    const mdUrl = `https://raw.githubusercontent.com/${PORTFOLIO_REPO}/about.md`;
-    const mdResponse = await fetch(mdUrl);
+    const mdResponse = await fetch('src/about.md');
     
-    if (!mdResponse.ok) throw new Error("Could not find about.md in the repo");
+    if (!mdResponse.ok) throw new Error("Could not find about.md");
     
     const mdText = await mdResponse.text();
 
@@ -393,7 +424,7 @@ async function loadProjects() {
   try {
     // Step A: Get a list of all your public repositories
     const allRepos = await ghFetch('/repos?per_page=100&sort=updated');
-    const publicRepos = allRepos.filter(repo => !repo.fork);
+    const publicRepos = allRepos; //.filter(repo => !repo.fork); // filter is for forked project
 
     // Step B: Guess-and-check every repository for the info.md file
     const projectsHtml = await Promise.all(publicRepos.map(async (repo) => {
@@ -490,6 +521,41 @@ function submitForm(e) {
     setTimeout(() => status.style.display = 'none', 4000);
   }, 900);
 }
+// ── SCATTERED BACKGROUND LOGIC ──
+function createFallingBackground() {
+  const container = document.getElementById('falling-bg-container');
+  const itemCount = 15; // The number of characters on screen at once
 
+  for (let i = 0; i < itemCount; i++) {
+    const img = document.createElement('img');
+    img.src = 'src/cinna_bg.png'; // Points to your local image
+    img.classList.add('falling-item');
+
+    // Randomize the starting horizontal position (0% to 100% of screen width)
+    const startPosX = Math.random() * 100; 
+    
+    // Randomize the size of each character (between 25px and 65px)
+    const size = 100 + (Math.random() * 40); 
+    
+    // Randomize how slowly they fall (between 12 and 27 seconds)
+    const fallDuration = 12 + (Math.random() * 15); 
+    
+    // Randomize the start delay so they don't all fall in a straight line
+    const delay = Math.random() * -20; 
+
+    // Apply the random math to the actual CSS of the image
+    img.style.left = startPosX + 'vw';
+    img.style.width = size + 'px';
+    img.style.animationDuration = fallDuration + 's';
+    img.style.animationDelay = delay + 's';
+
+    // Add the newly created image into our HTML container
+    container.appendChild(img);
+  }
+}
+
+// ── INIT ──
+loadHomeStats();
+createFallingBackground(); // <--- Add this line to start the effect
 // ── INIT ──
 loadHomeStats();
