@@ -172,7 +172,7 @@ async function loadFullAbout() {
 
   } catch (e) {
     console.error(e);
-    container.innerHTML = '<p style="color: red;">Failed to load about.md. Make sure the file exists in your repository!</p>';
+    container.innerHTML = '<p style="color: red;">Failed to load about.md.</p>';
   }
 }
 

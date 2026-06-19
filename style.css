@@ -620,7 +620,7 @@ background: var(--border);
 }
 
 .about-header::before {
-  content: '♡';
+  /* content: ''; */
   position: absolute;
   right: 20px; top: 12px;
   font-size: 60px;
