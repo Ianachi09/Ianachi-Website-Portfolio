@@ -1,0 +1,5 @@
+Website Portfolio
+preview.png
+This current website!!
+I developed it because my courses had an assignment to make a digital portfolio. I thought about making a website instead of any other medium as it is dynamic and customizable.
+This also taught me alot about web development especially on HTML, CSS, and even JavaScript. I would definitely remake this website after learning more about it.
