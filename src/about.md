@@ -17,16 +17,12 @@ On this semester, I’ve been relearning about how computer manages their memory
 
 In class, our lecturer teaches quite well and it really helps me learn data structure better. He uses graphics to teach and hands-on method on code implementation and as a visual learner, that helped a ton. My friends also thinks the same about the lecturer. Speaking of my friends, my circle are quite smart as they have experiences on coding beforehand whether on pre-uni or as a hobby. I also learned quite a bit from them
 
-
-
 <h3 align="center">Padlet Contributions</h3>
 
 Throughout this semester, I contributed alot of my notes into Padlet (a page where we share our notes to other coursemates). Personally I've been making a personal repository to take notes of every topics that we learn on this course and share it so that everyone else can see what I have jotted down for each chapter.
 
 On each of my notes, I implemented the basics of each topic and used comments to explain each confusing lines of code to better understand it
 These made me understand every chapter clearly and I have asked some of my coursemates about my notes and they said it also helped them. Furthermore. seeing other's notes was interesting as each notes were unique and some of them even made a project focusing on current topic.
-
-
 
 <img src="src/padlet-contributions.png" alt="Images of Padlet contribution throughout this semester">
 <center>
@@ -35,7 +31,7 @@ These made me understand every chapter clearly and I have asked some of my cours
 
 <h3 align="center">Challenges</h3>
 
-The challenges comes from keeping motivations and doing big projects like I did for this final group assesment.
+The challenges comes from keeping motivations and doing big projects like I did for this final group assessment.
 
 I sometime struggles trying to consistently keep up my progress in projects due to lack of drive or inspiration. You can see the effect of it from my GitHub heatmap. But when I checked YouTube or even learn from the class on interesting topic, I would get excited and straight to making my own program.
 Currently my plan to resolve this issue is to get into public repository in GitHub that have a roadmap on what to learn and use that to guide me through the learning process.
@@ -59,7 +55,7 @@ Closing my reflections, I am really happy that I got to learn DSA and planning t
 
 <h1 align="center">My Linux Experience</h1>
 
-The first time I heard about Linux was around few years back around 2024. At that time, I never thought about using it as I haven't started coding seriously (only as a hobby) and the thought about migrating from Windows and having to learn new stuff (as a pure science high school student) made me avoid it.
+The first time I heard about Linux was around few years back on 2024. At that time, I never thought about using it as I haven't started coding seriously (only as a hobby) and the thought about migrating from Windows and having to learn new stuff (as a pure science high school student) made me avoid it.
 
 After I finished taking matriculation and waiting for my acceptance letter for my degree. I started learning more about computers in detail as I have to get prepared for my course (most of the courses I applied is computer-related). I heard that Linux is one of the Operating System that most coding-related engineer use and prefer as it is FOSS (Free and Open-Source Software) and the versatility of it. At this time I thought about trying it but as i heard about the limitation on this OS (some Windows-only software + Kernel-level anti-cheat games wont work), I decided to halt it as I am not prepared for it
 
