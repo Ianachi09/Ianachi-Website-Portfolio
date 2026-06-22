@@ -128,11 +128,12 @@ gap: 7px;
 margin-right: auto;
 }
 
-.topnav-logo-dot {
-width: 8px; height: 8px;
-border-radius: 50%;
-background: var(--pink3);
-display: inline-block;
+.topnav-logo-img {
+  width: 60px;
+  height: 60px;
+  object-fit: contain;
+  margin-right: 10px;
+  vertical-align: middle;
 }
 
 .topnav-links {

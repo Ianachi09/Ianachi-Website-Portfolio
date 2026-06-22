@@ -19,7 +19,7 @@
 <!-- TOP NAVIGATION -->
 <nav class="topnav">
   <a href="#" class="topnav-logo" onclick="showPage('home')">
-    <span class="topnav-logo-dot"></span>Ianachi
+    <img src="src/nav_logo.png" alt="Ianachi Logo" class="topnav-logo-img">Ianachi
   </a>
   <ul class="topnav-links">
     <li><a href="#" onclick="showPage('home')" data-page="home" class="active">Home</a></li>
@@ -43,31 +43,31 @@
   <div class="sidebar-profile">
     <div class="sidebar-avatar" id="sidebar-avatar-img">🌸</div>
     <div class="sidebar-name">Ianachi</div>
-    <div class="sidebar-bio">CE student · learning · building stuff<br>chilling good music</div>
-    <div class="sidebar-status">focused on coding </div>
+    <div class="sidebar-bio">Computer Engineering Student · Learning · Building stuff<br>Chilling with good music</div>
+    <div class="sidebar-status">Focused on coding </div>
   </div>
 
   <nav class="sidebar-nav">
-    <div class="sidebar-nav-label">navigate</div>
+    <div class="sidebar-nav-label">Navigate</div>
     <a href="#" onclick="showPage('home'); closeSidebar()">
-      <span class="nav-icon">⌂</span> home
+      <span class="nav-icon">⌂</span> Home
     </a>
     <a href="#" onclick="showPage('about'); closeSidebar()">
-      <span class="nav-icon">◎</span> about
+      <span class="nav-icon">◎</span> About
     </a>
     <a href="#" onclick="showPage('padlet'); closeSidebar()">
-      <span class="nav-icon">📝</span> padlet
+      <span class="nav-icon">📝</span> Padlet
     </a>
     <a href="#" onclick="showPage('projects'); closeSidebar()">
-      <span class="nav-icon">◈</span> projects
+      <span class="nav-icon">◈</span> Projects
     </a>
     <a href="#" onclick="showPage('contact'); closeSidebar()">
-      <span class="nav-icon">✉</span> contact
+      <span class="nav-icon">✉</span> Contact
     </a>
   </nav>
 
   <nav class="sidebar-nav">
-    <div class="sidebar-nav-label">elsewhere</div>
+    <div class="sidebar-nav-label">Elsewhere</div>
     <a href="https://github.com/Ianachi08" target="_blank">
       <span class="nav-icon">⌨</span> GitHub
     </a>
@@ -136,9 +136,9 @@
               </div>
               <br>
               <div style="padding-left: 4px;">
-                <div class="t-out">Repos:     <span class="t-bright" id="gh-repos">loading…</span></div>
-                <div class="t-out">Stars:     <span class="t-green" id="gh-stars">loading…</span></div>
-                <div class="t-out">Streak:    <span class="t-pink" id="gh-streak">loading…</span></div>
+                <div class="t-out">Repos:     <span class="t-bright" id="gh-repos">Loading…</span></div>
+                <div class="t-out">Stars:     <span class="t-green" id="gh-stars">Loading…</span></div>
+                <div class="t-out">Streak:    <span class="t-pink" id="gh-streak">Loading…</span></div>
               </div>
               <br>
               <div class="t-bar-row">
@@ -183,12 +183,12 @@
         <div class="about-avatar" id="about-avatar-img">🌸</div>
         <div class="about-intro">
           <div class="about-intro-name">Ianachi</div>
-          <div class="about-intro-title">✦ CE Student · Learning</div>
+          <div class="about-intro-title">✦ Computer Engineering Student · Learning</div>
           
           <div class="compact-stats">
-            <span><strong id="about-repos-compact">–</strong> repos</span>
-            <span><strong id="about-stars-compact">–</strong> stars</span>
-            <span><strong id="about-contribs-compact">–</strong> contribs</span>
+            <span><strong id="about-repos-compact">–</strong> Repositories</span>
+            <span><strong id="about-stars-compact">–</strong> Stars</span>
+            <span><strong id="about-contribs-compact">–</strong> Contributions</span>
           </div>
           
           <div class="skill-grid" style="margin-top: 8px;">
@@ -201,7 +201,7 @@
 
       <div class="about-body markdown-container" id="about-markdown-content">
         <div class="page-loading">
-          <span>fetching about.md...</span>
+          <span>Fetching about.md...</span>
           <span class="loading-dots"><span>.</span><span>.</span><span>.</span></span>
         </div>
       </div>
@@ -212,11 +212,11 @@
  <!-- Padlet Page -->
 <section class="page" id="page-padlet">
     <div class="section-wrap">
-      <div class="section-title">padlet contributions</div>
+      <div class="section-title">Padlet Contributions</div>
       
       <div class="padlet-grid" id="padlet-container">
         <div class="page-loading">
-          <span>loading padlet notes...</span>
+          <span>Loading padlet notes...</span>
         </div>
       </div>
     </div>
@@ -225,18 +225,18 @@
   <!-- ══ PROJECTS PAGE ══ -->
   <section class="page" id="page-projects">
     <div class="section-wrap">
-      <div class="section-title">projects</div>
+      <div class="section-title">Projects</div>
 
       <div class="filter-bar" id="filter-bar">
-        <button class="filter-btn active" data-filter="all" onclick="filterProjects(this)">all</button>
-        <button class="filter-btn" data-filter="personal" onclick="filterProjects(this)">personal</button>
-        <button class="filter-btn" data-filter="assignment" onclick="filterProjects(this)">assignment</button>
-        <button class="filter-btn" data-filter="open-source" onclick="filterProjects(this)">open source</button>
+        <button class="filter-btn active" data-filter="all" onclick="filterProjects(this)">All</button>
+        <button class="filter-btn" data-filter="personal" onclick="filterProjects(this)">Personal</button>
+        <button class="filter-btn" data-filter="assignment" onclick="filterProjects(this)">Assignment</button>
+        <button class="filter-btn" data-filter="open-source" onclick="filterProjects(this)">Open Source</button>
       </div>
 
       <div class="project-list" id="project-list">
         <div class="page-loading">
-          <span>fetching repositories</span>
+          <span>Fetching repositories</span>
           <span class="loading-dots"><span>.</span><span>.</span><span>.</span></span>
         </div>
       </div>

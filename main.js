@@ -135,7 +135,7 @@ async function loadHomeStats() {
 
     const totalStars = repos.reduce((s, r) => s + r.stargazers_count, 0);
     document.getElementById('gh-stars').textContent = totalStars;
-    document.getElementById('gh-streak').textContent = '🔥 active';
+    document.getElementById('gh-streak').textContent = '🔥 Active';
   } catch(e) {
     console.error("Failed to load home stats:", e);
   }
